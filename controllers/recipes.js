@@ -24,7 +24,7 @@ async function createRecipe(req, res) {
         res.redirect(`/recipes/${recipe._id}`);
     } catch (err) {
         console.log(err);
-        res.render('error', { errorMsg: err.message });
+        res.send('error', { errorMsg: err.message });
     }
 }
 

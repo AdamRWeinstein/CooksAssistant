@@ -1,4 +1,4 @@
-const USER_TEST_ID = 100; //TODO Remove USER_TEST_ID
+const USER_TEST_ID = "123456789012345678901234"; //TODO Remove USER_TEST_ID
 
 const MEASUREMENT_UNITS = [
     'teaspoon',

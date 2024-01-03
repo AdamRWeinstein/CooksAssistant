@@ -10,7 +10,6 @@ require('./config/database');
 const indexRouter = require('./routes/index');
 const recipesRouter = require('./routes/recipes');
 const recipeStepsRouter = require('./routes/recipeSteps');
-const ingredientsRouter = require('./routes/ingredients');
 
 const app = express();
 
