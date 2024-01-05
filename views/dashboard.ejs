@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <script src="/public/javascripts/dashboard.js" defer></script>
 </head>
 <body>
     <nav>
@@ -24,13 +25,17 @@
                         <button type="button" id="addIngredientButton">+</button>
                     </li>
                 </ul>
-            </div>            
+            </div>
 
             <div class="RecipeSteps">
                 <!-- Add a recipe step here, the + button will add a new area for the next step -->
                 <ul class="recipeStepsList">
                     <li>
                         <input type="textarea" id="recipeStep" placeholder="Instructions">
+                        <label for="ingredients">Choose Ingredients:</label>
+                        <select id="ingredientsOptions" name="ingredients" multiple>
+                            <!-- Options are dynamically added when an ingredient is added above -->
+                        </select>
                         <button type="button" id="addRecipeStepButton">+</button>
                     </li>
                 </ul>
