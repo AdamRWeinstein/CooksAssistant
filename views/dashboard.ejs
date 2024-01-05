@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <nav>
+        <!-- EJS Logic with passed in recipes -->
+        <!-- Updated by Axios when a new recipe is submitted -->
+    </nav>
+
+    <div class="container create">
+        <h1>Create Recipe</h1>
+        <form action="/recipes/new" method="POST">
+            <label for="recipeName">Recipe Name:</label>
+            <input type="text" id="recipeName" name="recipeName" required><br><br>
+            
+            <div class="ingredients">
+                <ul class="ingredientsList">
+                    <li>
+                        <input type="text" id="ingredientName" placeholder="Ingredient Name">
+                        <button type="button" id="addIngredientButton">+</button>
+                    </li>
+                </ul>
+            </div>            
+
+            <div class="RecipeSteps">
+                <!-- Add a recipe step here, the + button will add a new area for the next step -->
+                <ul class="recipeStepsList">
+                    <li>
+                        <input type="textarea" id="recipeStep" placeholder="Instructions">
+                        <button type="button" id="addRecipeStepButton">+</button>
+                    </li>
+                </ul>
+            </div>
+            
+            <button type="button" id="addRecipeButton">Create Recipe</button>
+            <!-- This button will have an axios call to `/recipes/new` as well as write all the recipeSteps with the resulting recipeId, incrementing each stepNumber -->
+        </form>
+    </div>
+
+        
+    </div>
+
+    <div class="container view">
+        <h1>Recipe Details</h1>
+        <!-- Add your specific recipe details here -->
+    </div>
+
+    <!-- Add your JavaScript code here -->
+</body>
+</html>
