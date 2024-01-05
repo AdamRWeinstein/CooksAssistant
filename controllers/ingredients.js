@@ -1,7 +1,5 @@
 const Ingredient = require('../models/ingredient');
 
-
-
 async function getAllIngredients(req, res) {
     try {
         let ingredients = await Ingredient.find();
