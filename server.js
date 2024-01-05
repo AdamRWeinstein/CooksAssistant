@@ -8,6 +8,7 @@ require('dotenv').config();
 require('./config/database');
 
 const indexRouter = require('./routes/index');
+const dashboardRouter = require('./routes/dashboard');
 const recipesRouter = require('./routes/recipes');
 const recipeStepsRouter = require('./routes/recipeSteps');
 const ingredientsRouter = require('./routes/ingredients');
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/dashboard', dashboardRouter);
 app.use('/recipes', recipesRouter);
 app.use('/recipeSteps', recipeStepsRouter);
 app.use('/ingredients', ingredientsRouter);
