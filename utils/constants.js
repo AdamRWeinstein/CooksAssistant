@@ -7,7 +7,8 @@ const MEASUREMENT_UNITS = [
     'g',     // gram
     'oz',    // ounce
     'lb',    // pound
-    'pinch'  // pinch (no standard shorthand)
+    'unit',  
+    'pinch'
 ];
 
 if (typeof module !== 'undefined') {
