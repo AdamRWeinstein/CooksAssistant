@@ -8,38 +8,45 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="../utils/constants.js"></script>
     <script src="/javascripts/dashboard.js" defer></script>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 
 <body>
     <nav>
         <!-- EJS Logic with passed in recipes -->
         <!-- Updated by Axios when a new recipe is submitted -->
-        <% recipes.forEach(recipe => { %>
-            <a href="#" class="recipe"><%= recipe.name %></a>
-        <% }) %>
+        <% recipes.forEach(recipe=> { %>
+            <a href="#" class="recipe">
+                <%= recipe.name %>
+            </a>
+            <% }) %>
     </nav>
 
     <div class="container create">
         <label for="recipeName">Recipe Name:</label>
         <input type="text" name="recipeName" id="recipeName" placeholder="Recipe Name">
         <div class="step" id="step1">
-            <div>
-                <textarea name="Instructions" id="recipeStep1" placeholder="Step 1"></textarea>
-            </div>
-            <div class="ingredients">
-                <button type="button" id="addIngredientButton1">Add Ingredient</button>
-                <div id="ingredientsContainer1"></div>
+            <h1>Step 1</h1>
+            <div class="stepContainer" id="stepContainer1">
+                <div>
+                    <textarea name="Instructions" class="recipeStep" id="recipeStep1" placeholder="Step 1"></textarea>
+                </div>
+                <div class="ingredients">
+                    <button type="button" class="addIngredientButton" id="addIngredientButton1">Add Ingredient</button>
+                    <div class="ingredientsContainer" id="ingredientsContainer1"></div>
+                </div>
             </div>
         </div>
         <div id="buttonsContainer">
             <button type="button" id="addStepButton">Add Step</button>
+            <button type="button" id="removeStepButton">Remove Step</button>
             <button type="button" id="saveRecipeButton">Save Recipe</button>
         </div>
     </div>
 
     <!-- <div class="container view"> -->
-        <!-- <h1>Recipe Details</h1> -->
-        <!-- Add your specific recipe details here -->
+    <!-- <h1>Recipe Details</h1> -->
+    <!-- Add your specific recipe details here -->
     <!-- </div> -->
 </body>
 

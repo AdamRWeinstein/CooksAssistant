@@ -1,8 +1,126 @@
+* {
+  box-sizing: border-box;
+  caret-color: transparent;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+    caret-color: auto;
+}
+
+/* Top Level */
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-a {
-  color: #00B7FF;
+nav {
+  flex-basis: 20%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex-basis: 80%;
+}
+
+/* Step Container */
+.stepContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.stepContainer > div {
+  flex-grow: 1;
+}
+
+.recipeStep {
+  width: 100%;
+  height: 100%;
+}
+
+.ingredients {
+  text-align: right;
+}
+/* 
+.addIngredientButton,
+.ingredientsContainer {
+  justify-self: end;
+} */
+
+.ingredientsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end; /* TODO Doesn't seem to work? */
+}
+
+.ingredient {
+  margin-top: 5px;
+}
+
+/* Buttons */
+
+#buttonsContainer {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+#buttonsContainer > button:first-child {
+  margin-right: 20px;
+}
+
+#buttonsContainer > button:last-child {
+  margin-left: auto;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Delete Button */
+.deleteButton {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  margin-left: 5px;
+  gap: 3px;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.deleteButton svg {
+  width: 44%;
+}
+.deleteButton:hover {
+  background-color: rgb(237, 56, 56);
+  overflow: visible;
+}
+.bin path {
+  transition: all 0.2s;
+}
+.deleteButton:hover .bin path {
+  fill: #fff;
+}
+.deleteButton:active {
+  transform: scale(0.98);
 }
