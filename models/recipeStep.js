@@ -21,7 +21,7 @@ const recipeStepSchema = new Schema({
             required: true
         }
     }],
-    instruction: { type: String, required: true }
+    instructions: { type: String, required: true }
 }, {
     timestamps: true
 });

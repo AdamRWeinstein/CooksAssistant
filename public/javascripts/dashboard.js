@@ -37,6 +37,7 @@ document.getElementById('saveRecipeButton').addEventListener('click', async () =
         const instructions = step.querySelector('textarea').value;
         return { stepIndex, ingredients, instructions };
     });
+    console.log(stepsWithIngredients);
     // Step 2: Flatten the ingredients array for processing
     const ingredientsArray = stepsWithIngredients.flatMap(step => step.ingredients);
 
@@ -114,7 +115,7 @@ document.getElementById('saveRecipeButton').addEventListener('click', async () =
                     quantity: ingredient.quantity,
                     measurementUnit: ingredient.measurementUnit
                 })),
-                instructions
+                instructions: step.instructions
             }
         });
         const response = await axios.post('/recipeSteps', recipeStepsData);
