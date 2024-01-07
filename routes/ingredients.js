@@ -3,6 +3,7 @@ const router = express.Router();
 const ingredientsController = require('../controllers/ingredients');
 
 router.get('/', ingredientsController.getAllIngredients);
-router.post('/', ingredientsController.createIngredient);
+router.get('/byName', ingredientsController.getIngredientsByName);
+router.post('/', ingredientsController.createIngredients);
 
 module.exports = router;

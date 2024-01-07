@@ -21,7 +21,7 @@ async function viewRecipe(req, res) {
 async function createRecipe(req, res) {
     try {
         let recipe = await Recipe.create(req.body);
-        res.redirect(`/recipes/${recipe._id}`);
+        res.status(200).json(recipe);
     } catch (err) {
         console.log(err);
         res.send('error', { errorMsg: err.message });
