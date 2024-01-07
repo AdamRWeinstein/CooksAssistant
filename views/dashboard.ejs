@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="../utils/constants.js"></script>
     <script src="/javascripts/dashboard.js" defer></script>
 </head>
 
@@ -16,55 +17,26 @@
     </nav>
 
     <div class="container create">
-        <h1>Create Recipe</h1>
-        <form action="/recipes/new" method="POST">
-            <label for="recipeName">Recipe Name:</label>
-            <input type="text" id="recipeName" name="recipeName" required><br><br>
-
+        <h1>Title</h1>
+        <div class="step" id="step1">
+            <div>
+                <textarea name="Instructions" id="recipestep1" placeholder="Step 1"></textarea>
+            </div>
             <div class="ingredients">
-                <ul class="ingredientsList">
-                    <li>
-                        <label for="ingredientName">Add Ingredient to Recipe:</label>
-                        <input type="text" id="ingredientName" placeholder="Ingredient Name">
-                        <button type="button" id="addIngredientButton">+</button>
-                    </li>
-                </ul>
+                <button type="button" id="addIngredientButton1">Add Ingredient</button>
+                <div id="ingredientsContainer1"></div>
             </div>
-
-            <div class="RecipeSteps">
-                <!-- Add a recipe step here, the + button will add a new area for the next step -->
-                <ul class="recipeStepsList">
-                    <li>
-                        <div>
-                            <label for="ingredients">Choose Ingredients for Step:</label>
-                            <select id="ingredientsOptions" name="ingredients">
-                                <!-- Options are dynamically added when an ingredient is added above -->
-                            </select>
-                            <button type="button" id="addIngredientToStepButton">+</button><br>
-                            <ul id="ingredientsRecipeList">
-                                <!-- Ingredients are dynamically added to the recipe step -->
-                            </ul>
-                            <textarea id="recipeStep" placeholder="Instructions for step"></textarea>
-                        </div>
-                        <button type="button" id="addRecipeStepButton">+</button>
-                    </li>
-                </ul>
-            </div>
-
-            <button type="button" id="addRecipeButton">Create Recipe</button>
-            <!-- This button will have an axios call to `/recipes/new` as well as write all the recipeSteps with the resulting recipeId, incrementing each stepNumber -->
-        </form>
-    </div>
-
-
+        </div>
+        <div id="buttonsContainer">
+            <button type="button" id="addStepButton">Add Step</button>
+            <button type="button" id="saveRecipeButton">Save Recipe</button>
+        </div>
     </div>
 
     <div class="container view">
         <h1>Recipe Details</h1>
         <!-- Add your specific recipe details here -->
     </div>
-
-    <!-- Add your JavaScript code here -->
 </body>
 
 </html>
