@@ -1,3 +1,11 @@
+// Nav
+document.querySelectorAll('.recipe').forEach(function (element) {
+    element.addEventListener('click', function (event) {
+        event.preventDefault();
+    });
+});
+
+// Create
 let stepCount = 1;
 
 document.getElementById('addIngredientButton1').addEventListener('click', handleAddIngredientClick);
@@ -164,3 +172,5 @@ function handleAddIngredientClick(event) {
     // Step 5: Append the wrapper to the container
     ingredientsContainer.appendChild(ingredientWrapper);
 }
+
+// View
