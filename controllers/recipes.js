@@ -1,5 +1,6 @@
 const Recipe = require('../models/recipe');
 const RecipeStep = require('../models/recipeStep');
+const Ingredient = require('../models/ingredient');
 const User = require('../models/user');
 const { USER_TEST_ID } = require('../utils/constants'); //TODO Remove USER_TEST_ID
 
@@ -28,9 +29,27 @@ async function createRecipe(req, res) {
     }
 }
 
+async function deleteRecipe(req, res) {
+    try {
+        const recipeId = req.params.recipeId;
+
+        // Delete associated recipe steps
+        await RecipeStep.deleteMany({ recipeId });
+
+        // Delete the recipe
+        await Recipe.findByIdAndDelete(recipeId);
+
+        res.status(200).json({ message: 'Recipe and associated data deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ errorMsg: err.message });
+    }
+}
+
 module.exports = {
     getAllRecipes,
     createRecipeForm,
     viewRecipe,
-    createRecipe
+    createRecipe,
+    deleteRecipe
 };

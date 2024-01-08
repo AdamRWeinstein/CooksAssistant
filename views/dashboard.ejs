@@ -15,11 +15,15 @@
     <nav>
         <!-- EJS Logic with passed in recipes -->
         <!-- Updated by Axios when a new recipe is submitted -->
-        <% recipes.forEach(recipe=> { %>
-            <a href="#" class="recipe" data-id="<%= recipe._id %>">
-                <%= recipe.name %>
-            </a>
-            <% }) %>
+        <% recipes.forEach(recipe => { %>
+            <div class="recipe-item">
+                <a href="#" class="recipe" data-id="<%= recipe._id %>">
+                    <%= recipe.name %>
+                </a>
+                <button class="delete-recipe" data-id="<%= recipe._id %>">Delete</button>
+            </div>
+        <% }) %>
+        
 
     </nav>
 

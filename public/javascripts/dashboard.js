@@ -71,6 +71,27 @@ document.querySelectorAll('.recipe').forEach(function (element) {
     });
 });
 
+document.querySelectorAll('.delete-recipe').forEach(button => {
+    button.addEventListener('click', async (event) => {
+        event.preventDefault();
+        
+        const recipeId = button.getAttribute('data-id');
+        if (confirm('Are you sure you want to delete this recipe?')) {
+            try {
+                // Delete the recipe by ID
+                await axios.delete(`/recipes/${recipeId}`);
+                
+                // Remove the recipe item from the UI
+                button.closest('.recipe-item').remove();
+
+                console.log('Recipe deleted successfully');
+            } catch (error) {
+                console.error('Error deleting recipe:', error);
+            }
+        }
+    });
+});
+
 // Create
 let stepCount = 1;
 
