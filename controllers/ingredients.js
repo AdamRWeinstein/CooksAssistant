@@ -1,4 +1,5 @@
 const Ingredient = require('../models/ingredient');
+const mongoose = require('mongoose');
 
 async function getAllIngredients(req, res) {
     try {
@@ -32,6 +33,20 @@ async function getIngredientsByName(req, res) {
     }
 }
 
+
+async function getIngredientsById(req, res) {
+    try {
+        const ingredientIds = req.query.ids.split(',').map(id => new mongoose.Types.ObjectId(id));
+        console.log(ingredientIds)
+        const ingredients = await Ingredient.find({ '_id': { $in: ingredientIds } });
+        console.log(ingredients)
+        res.status(200).json(ingredients);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ errorMsg: err.message });
+    }
+}
+
 async function createIngredients(req, res) {
     try {
         // Check if the request body is an array
@@ -53,6 +68,7 @@ async function createIngredients(req, res) {
 
 module.exports = {
     getAllIngredients,
+    getIngredientsById,
     getIngredientsByName,
     createIngredients
 };

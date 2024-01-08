@@ -16,13 +16,14 @@
         <!-- EJS Logic with passed in recipes -->
         <!-- Updated by Axios when a new recipe is submitted -->
         <% recipes.forEach(recipe=> { %>
-            <a href="#" class="recipe">
+            <a href="#" class="recipe" data-id="<%= recipe._id %>">
                 <%= recipe.name %>
             </a>
             <% }) %>
+
     </nav>
 
-    <div class="container create">
+    <div class="container create hidden">
         <label for="recipeName">Recipe Name:</label>
         <input type="text" name="recipeName" id="recipeName" placeholder="Recipe Name">
         <div class="step" id="step1">
@@ -44,10 +45,13 @@
         </div>
     </div>
 
-    <!-- <div class="container view"> -->
-    <!-- <h1>Recipe Details</h1> -->
-    <!-- Add your specific recipe details here -->
-    <!-- </div> -->
+    <div class="container view hidden">
+        <h1 id="viewRecipeName">Recipe Name</h1>
+        <div id="viewRecipeSteps">
+            <!-- Recipe steps will be dynamically added here -->
+        </div>
+    </div>
+
 </body>
 
 </html>

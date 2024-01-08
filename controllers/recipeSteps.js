@@ -1,4 +1,17 @@
 const RecipeStep = require('../models/recipeStep');
+const axios = require('axios');
+
+
+async function getRecipeStepsByRecipeId(req, res) {
+    try {
+        const recipeId = req.params.recipeId;
+        const recipeSteps = await RecipeStep.find({ recipeId });
+        res.status(200).json(recipeSteps);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ errorMsg: err.message });
+    }
+}
 
 async function createRecipeSteps(req, res) {
     // Check if the request body is an array
@@ -16,6 +29,8 @@ async function createRecipeSteps(req, res) {
     }
 }
 
+
 module.exports = {
+    getRecipeStepsByRecipeId,
     createRecipeSteps
 };

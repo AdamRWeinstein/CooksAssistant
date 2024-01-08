@@ -1,7 +1,73 @@
 // Nav
 document.querySelectorAll('.recipe').forEach(function (element) {
-    element.addEventListener('click', function (event) {
+    element.addEventListener('click', async function (event) {
+        console.log("click")
         event.preventDefault();
+
+        const recipeId = event.target.getAttribute('data-id');
+        try {
+            // Get Recipe Steps
+            const response = await axios.get(`/recipeSteps/${recipeId}`);
+            const recipeData = response.data;
+
+            // Get Ingredients
+            const ingredientIds = [...new Set(recipeData.flatMap(step => step.ingredients.map(ing => ing._id)))];
+            const ingredientsResponse = await axios.get(`/ingredients/byId?ids=${ingredientIds.join(',')}`);
+            console.log(ingredientsResponse)
+            const ingredientsDetails = ingredientsResponse.data;
+            console.log(ingredientsDetails)
+        
+            // Step 3: Map back the ingredient details to recipeData
+            recipeData.forEach(step => {
+                step.ingredients.forEach(ing => {
+                    const ingredientDetail = ingredientsDetails.find(detail => detail._id === ing._id);
+                    if (ingredientDetail) {
+                        ing.name = ingredientDetail.name;
+                    }
+                });
+            });
+
+            // Update the recipe name
+            document.getElementById('viewRecipeName').textContent = event.target.textContent;
+
+            // Clear existing steps (if any)
+            const stepsContainer = document.getElementById('viewRecipeSteps');
+            stepsContainer.innerHTML = '';
+
+            // Add steps to the view
+            recipeData.forEach((step, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.className = 'viewStep';
+
+                // Add step title
+                const stepTitle = document.createElement('h2');
+                stepTitle.textContent = `Step ${index + 1}`;
+                stepElement.appendChild(stepTitle);
+
+                // Add step instructions
+                const stepInstructions = document.createElement('p');
+                stepInstructions.textContent = step.instructions;
+                stepElement.appendChild(stepInstructions);
+
+                // Add ingredients (if any)
+                if (step.ingredients && step.ingredients.length > 0) {
+                    const ingredientsList = document.createElement('ul');
+                    step.ingredients.forEach(ingredient => {
+                        const ingredientItem = document.createElement('li');
+                        ingredientItem.textContent = `${ingredient.name} - ${ingredient.quantity} ${ingredient.measurementUnit}`;
+                        ingredientsList.appendChild(ingredientItem);
+                    });
+                    stepElement.appendChild(ingredientsList);
+                }
+
+                stepsContainer.appendChild(stepElement);
+            });
+
+            // Show the view container
+            document.querySelector('.container.view').classList.remove('hidden');
+        } catch (error) {
+            console.log('Error fetching recipe details:', error);
+        }
     });
 });
 

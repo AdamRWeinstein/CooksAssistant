@@ -124,3 +124,8 @@ button:hover {
 .deleteButton:active {
   transform: scale(0.98);
 }
+
+/* Util */
+.hidden {
+  display: none;
+}
