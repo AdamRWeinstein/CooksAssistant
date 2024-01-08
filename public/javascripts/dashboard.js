@@ -3,84 +3,21 @@ document.querySelectorAll('.recipe').forEach(function (element) {
     element.addEventListener('click', async function (event) {
         console.log("click")
         event.preventDefault();
+        loadRecipe(event.target.getAttribute('data-id'), event.target.textContent)
 
-        const recipeId = event.target.getAttribute('data-id');
-        try {
-            // Get Recipe Steps
-            const response = await axios.get(`/recipeSteps/${recipeId}`);
-            const recipeData = response.data;
-
-            // Get Ingredients
-            const ingredientIds = [...new Set(recipeData.flatMap(step => step.ingredients.map(ing => ing._id)))];
-            const ingredientsResponse = await axios.get(`/ingredients/byId?ids=${ingredientIds.join(',')}`);
-            console.log(ingredientsResponse)
-            const ingredientsDetails = ingredientsResponse.data;
-            console.log(ingredientsDetails)
-        
-            // Step 3: Map back the ingredient details to recipeData
-            recipeData.forEach(step => {
-                step.ingredients.forEach(ing => {
-                    const ingredientDetail = ingredientsDetails.find(detail => detail._id === ing._id);
-                    if (ingredientDetail) {
-                        ing.name = ingredientDetail.name;
-                    }
-                });
-            });
-
-            // Update the recipe name
-            document.getElementById('viewRecipeName').textContent = event.target.textContent;
-
-            // Clear existing steps (if any)
-            const stepsContainer = document.getElementById('viewRecipeSteps');
-            stepsContainer.innerHTML = '';
-
-            // Add steps to the view
-            recipeData.forEach((step, index) => {
-                const stepElement = document.createElement('div');
-                stepElement.className = 'viewStep';
-
-                // Add step title
-                const stepTitle = document.createElement('h2');
-                stepTitle.textContent = `Step ${index + 1}`;
-                stepElement.appendChild(stepTitle);
-
-                // Add step instructions
-                const stepInstructions = document.createElement('p');
-                stepInstructions.textContent = step.instructions;
-                stepElement.appendChild(stepInstructions);
-
-                // Add ingredients (if any)
-                if (step.ingredients && step.ingredients.length > 0) {
-                    const ingredientsList = document.createElement('ul');
-                    step.ingredients.forEach(ingredient => {
-                        const ingredientItem = document.createElement('li');
-                        ingredientItem.textContent = `${ingredient.name} - ${ingredient.quantity} ${ingredient.measurementUnit}`;
-                        ingredientsList.appendChild(ingredientItem);
-                    });
-                    stepElement.appendChild(ingredientsList);
-                }
-
-                stepsContainer.appendChild(stepElement);
-            });
-
-            // Show the view container
-            document.querySelector('.container.view').classList.remove('hidden');
-        } catch (error) {
-            console.log('Error fetching recipe details:', error);
-        }
     });
 });
 
 document.querySelectorAll('.delete-recipe').forEach(button => {
     button.addEventListener('click', async (event) => {
         event.preventDefault();
-        
+
         const recipeId = button.getAttribute('data-id');
         if (confirm('Are you sure you want to delete this recipe?')) {
             try {
                 // Delete the recipe by ID
                 await axios.delete(`/recipes/${recipeId}`);
-                
+
                 // Remove the recipe item from the UI
                 button.closest('.recipe-item').remove();
 
@@ -91,6 +28,72 @@ document.querySelectorAll('.delete-recipe').forEach(button => {
         }
     });
 });
+
+async function loadRecipe(recipeId, recipeName) {
+    try {
+        // Get Recipe Steps
+        const response = await axios.get(`/recipeSteps/${recipeId}`);
+        const recipeData = response.data;
+
+        // Get Ingredients
+        const ingredientIds = [...new Set(recipeData.flatMap(step => step.ingredients.map(ing => ing._id)))];
+        const ingredientsResponse = await axios.get(`/ingredients/byId?ids=${ingredientIds.join(',')}`);
+        console.log(ingredientsResponse)
+        const ingredientsDetails = ingredientsResponse.data;
+        console.log(ingredientsDetails)
+
+        // Step 3: Map back the ingredient details to recipeData
+        recipeData.forEach(step => {
+            step.ingredients.forEach(ing => {
+                const ingredientDetail = ingredientsDetails.find(detail => detail._id === ing._id);
+                if (ingredientDetail) {
+                    ing.name = ingredientDetail.name;
+                }
+            });
+        });
+
+        // Update the recipe name
+        document.getElementById('viewRecipeName').textContent = recipeName;
+
+        // Clear existing steps (if any)
+        const stepsContainer = document.getElementById('viewRecipeSteps');
+        stepsContainer.innerHTML = '';
+
+        // Add steps to the view
+        recipeData.forEach((step, index) => {
+            const stepElement = document.createElement('div');
+            stepElement.className = 'viewStep';
+
+            // Add step title
+            const stepTitle = document.createElement('h2');
+            stepTitle.textContent = `Step ${index + 1}`;
+            stepElement.appendChild(stepTitle);
+
+            // Add step instructions
+            const stepInstructions = document.createElement('p');
+            stepInstructions.textContent = step.instructions;
+            stepElement.appendChild(stepInstructions);
+
+            // Add ingredients (if any)
+            if (step.ingredients && step.ingredients.length > 0) {
+                const ingredientsList = document.createElement('ul');
+                step.ingredients.forEach(ingredient => {
+                    const ingredientItem = document.createElement('li');
+                    ingredientItem.textContent = `${ingredient.name} - ${ingredient.quantity} ${ingredient.measurementUnit}`;
+                    ingredientsList.appendChild(ingredientItem);
+                });
+                stepElement.appendChild(ingredientsList);
+            }
+
+            stepsContainer.appendChild(stepElement);
+        });
+
+        // Show the view container
+        document.querySelector('.container.view').classList.remove('hidden');
+    } catch (error) {
+        console.log('Error fetching recipe details:', error);
+    }
+}
 
 // Create
 let stepCount = 1;
@@ -230,6 +233,40 @@ document.getElementById('saveRecipeButton').addEventListener('click', async () =
         console.error('Error processing recipe:', error);
         // Handle error (e.g., show error message)
     }
+    // Add to nav bar and load in to view
+    if (recipeId) {
+        // Add the new recipe to the nav bar
+        const navDiv = document.getElementById('recipe-nav');
+        const recipeDiv = document.createElement('div');
+        recipeDiv.className = 'recipe-item';
+
+        const recipeLink = document.createElement('a');
+        recipeLink.href = '#';
+        recipeLink.className = 'recipe';
+        recipeLink.setAttribute('data-id', recipeId);
+        recipeLink.textContent = recipeName;
+        recipeLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            loadRecipe(recipeId, recipeName);
+        });
+        recipeDiv.appendChild(recipeLink);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-recipe';
+        deleteButton.setAttribute('data-id', recipeId);
+        deleteButton.textContent = 'Delete';
+        // Add event listener for deleteButton if needed
+        recipeDiv.appendChild(deleteButton);
+
+        navDiv.appendChild(recipeDiv);
+
+        // Load the newly written recipe
+        loadRecipe(recipeId, recipeName);
+
+        // Clear the input fields and hide the create container
+        document.getElementById('recipeName').value = '';
+        document.querySelector('.container.create').classList.add('hidden');
+    }
 });
 
 function handleAddIngredientClick(event) {
@@ -282,7 +319,7 @@ function handleAddIngredientClick(event) {
     ingredientWrapper.appendChild(deleteButton);
 
     // Step 5: Attach an event listener to the delete button
-    deleteButton.addEventListener('click', function() {
+    deleteButton.addEventListener('click', function () {
         ingredientsContainer.removeChild(ingredientWrapper);
     });
 
@@ -291,3 +328,15 @@ function handleAddIngredientClick(event) {
 }
 
 // View
+document.getElementById('addRecipeButton').addEventListener('click', function () {
+    const viewContainer = document.querySelector('.container.view');
+    const createContainer = document.querySelector('.container.create');
+
+    // Hide the view container if it's not already hidden
+    if (!viewContainer.classList.contains('hidden')) {
+        viewContainer.classList.add('hidden');
+    }
+
+    // Show the create container
+    createContainer.classList.remove('hidden');
+});
