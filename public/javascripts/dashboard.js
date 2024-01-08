@@ -9,24 +9,7 @@ document.querySelectorAll('.recipe').forEach(function (element) {
 });
 
 document.querySelectorAll('.delete-recipe').forEach(button => {
-    button.addEventListener('click', async (event) => {
-        event.preventDefault();
-
-        const recipeId = button.getAttribute('data-id');
-        if (confirm('Are you sure you want to delete this recipe?')) {
-            try {
-                // Delete the recipe by ID
-                await axios.delete(`/recipes/${recipeId}`);
-
-                // Remove the recipe item from the UI
-                button.closest('.recipe-item').remove();
-
-                console.log('Recipe deleted successfully');
-            } catch (error) {
-                console.error('Error deleting recipe:', error);
-            }
-        }
-    });
+    button.addEventListener('click', handleDeleteRecipe);
 });
 
 async function loadRecipe(recipeId, recipeName) {
@@ -95,6 +78,27 @@ async function loadRecipe(recipeId, recipeName) {
     }
 }
 
+async function handleDeleteRecipe(event) {
+    event.preventDefault();
+
+    const button = event.currentTarget;
+    const recipeId = button.getAttribute('data-id');
+    
+    if (confirm('Are you sure you want to delete this recipe?')) {
+        try {
+            // Delete the recipe by ID
+            await axios.delete(`/recipes/${recipeId}`);
+
+            // Remove the recipe item from the UI
+            button.closest('.recipe-item').remove();
+
+            console.log('Recipe deleted successfully');
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+        }
+    }
+}
+
 // Create
 let stepCount = 1;
 
@@ -130,6 +134,7 @@ document.getElementById('addStepButton').addEventListener('click', () => {
 document.getElementById('removeStepButton').addEventListener('click', () => {
     const steps = document.querySelectorAll('.step');
     const lastStep = steps[steps.length - 1];
+    if(stepCount === 1) return;
     lastStep.remove();
     stepCount--;
 });
@@ -254,7 +259,7 @@ document.getElementById('saveRecipeButton').addEventListener('click', async () =
         deleteButton.className = 'delete-recipe';
         deleteButton.setAttribute('data-id', recipeId);
         deleteButton.textContent = 'Delete';
-        // Add event listener for deleteButton if needed
+        deleteButton.addEventListener('click', handleDeleteRecipe);
         recipeDiv.appendChild(deleteButton);
 
         navDiv.appendChild(recipeDiv);
