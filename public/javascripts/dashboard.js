@@ -204,7 +204,6 @@ document.getElementById('saveRecipeButton').addEventListener('click', async () =
 
     // Step 5: Write the Recipe to the database
     const recipeName = document.getElementById('recipeName').value;
-    const userId = USER_TEST_ID //TODO Replace USER_TEST_ID with logged in user
     let recipeId;
     try {
         const response = await axios.post('/recipes', { name: recipeName, user: userId });

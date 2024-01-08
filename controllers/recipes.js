@@ -1,11 +1,8 @@
 const Recipe = require('../models/recipe');
 const RecipeStep = require('../models/recipeStep');
-const Ingredient = require('../models/ingredient');
-const User = require('../models/user');
-const { USER_TEST_ID } = require('../utils/constants'); //TODO Remove USER_TEST_ID
 
 async function getAllRecipes(req, res) {
-    const recipes = await Recipe.find({ user: USER_TEST_ID });
+    const recipes = await Recipe.find({ user: req.user._id });
     res.render('recipes/index', { recipes });
 }
 
@@ -32,6 +29,16 @@ async function createRecipe(req, res) {
 async function deleteRecipe(req, res) {
     try {
         const recipeId = req.params.recipeId;
+        
+        const recipe = await Recipe.findById(recipeId);
+        if (!recipe) {
+            return res.status(404).json({ message: 'Recipe not found' });
+        }
+
+        // Check if the currently logged in user is the creator of the recipe
+        if (recipe.user.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Unauthorized to delete this recipe' });
+        }
 
         // Delete associated recipe steps
         await RecipeStep.deleteMany({ recipeId });

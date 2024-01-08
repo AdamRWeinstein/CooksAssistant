@@ -58,7 +58,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-end; /* TODO Doesn't seem to work? */
+  align-items: flex-end;
 }
 
 .ingredient {
@@ -128,4 +128,16 @@ button:hover {
 /* Util */
 .hidden {
   display: none;
+}
+
+/* Login */
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 34px;
+}
+
+.login img {
+  height: 30px;
 }
